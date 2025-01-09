@@ -44,7 +44,7 @@ jobs:
           },
           "Peloton": {
             "NumWorkoutsToDownload": ${{ github.event.inputs.workoutsToDownload || env.DEFAULT_WORKOUT_NUM }},
-            "ExcludeWorkoutTypes": ["Outdoor Cycling","TreadmillRunning","OutdoorRunning","TreadmillWalking","OutdoorWalking","Cardio","Circuit",Strength","Stretching","Yoga","Meditation"]
+            "ExcludeWorkoutTypes": ["Outdoor Cycling","TreadmillRunning","OutdoorRunning","TreadmillWalking","OutdoorWalking","Cardio","Circuit","Strength","Stretching","Yoga","Meditation"]
           },
           "Garmin": {
             "Upload": true,
@@ -58,7 +58,7 @@ jobs:
               "Enabled": false
             },
             "Serilog": {
-              "Using": [ "Serilog.Sinks.Console"],
+              "Using": ["Serilog.Sinks.Console"],
               "MinimumLevel": "Information"
             }
           }
