@@ -13,12 +13,13 @@ on:
         type: boolean
         default: false
   schedule:
+  # MIGHT BE 2 hours out. So 7 = 9
+    - cron: '0 7 * * *'
     - cron: '0 8 * * *'
     - cron: '0 9 * * *'
     - cron: '0 10 * * *'
-    - cron: '0 12 * * *'
-    - cron: '0 14 * * *'
-    - cron: '0 16 * * *'
+    - cron: '0 12 * * *'  
+    - cron: '0 17 * * *'
     - cron: '0 18 * * *'
     - cron: '0 19 * * *'
     - cron: '0 20 * * *'
