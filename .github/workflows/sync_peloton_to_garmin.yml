@@ -34,12 +34,6 @@ jobs:
       image:  philosowaffle/peloton-to-garmin:console-stable
     steps:
 
-    - name: ⚙ Configure output directory
-      run: echo "OUTPUT_DIR=/app/output" >> $GITHUB_ENV
-
-    - name: 📁Create output directory
-      run: mkdir -p ${{ env.OUTPUT_DIR }}
-
     - name: 🗃 Create config file
       env:
         DEFAULT_WORKOUT_NUM: 5
