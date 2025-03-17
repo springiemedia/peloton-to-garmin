@@ -32,7 +32,7 @@ jobs:
     container: 
       image:  philosowaffle/peloton-to-garmin:console-stable
     steps:	
-	- name: ⚙ Configure output directory
+    - name: ⚙ Configure output directory
       run: echo "OUTPUT_DIR=/app/output" >> $GITHUB_ENV
     - name: 📁Create output directory
       run: mkdir -p ${{ env.OUTPUT_DIR }}	  
