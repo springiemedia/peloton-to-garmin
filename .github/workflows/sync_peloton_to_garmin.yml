@@ -1,6 +1,6 @@
 # This is a workflow that will automatically sync your Peloton rides with Garmin
 
-name: Sync workflow
+name: 🔄 Sync Workflow
 
 # Controls when the action will run.
 on:
@@ -24,6 +24,7 @@ on:
     - cron: '0 19 * * *'
     - cron: '0 20 * * *'
     - cron: '0 22 * * *'
+
 jobs:
   sync:
     name: 🔄 Sync
@@ -61,7 +62,7 @@ jobs:
               "AutomaticallyStackWorkouts": false,
               "MaxAllowedGapSeconds": 300
             }
-          },		             
+          },
           "Peloton": {
             "NumWorkoutsToDownload": ${{ github.event.inputs.workoutsToDownload || env.DEFAULT_WORKOUT_NUM }},
             "ExcludeWorkoutTypes": ["Outdoor Cycling","TreadmillRunning","OutdoorRunning","TreadmillWalking","OutdoorWalking","Cardio","Circuit","Strength","Stretching","Yoga","Meditation"]
@@ -78,14 +79,15 @@ jobs:
               "Enabled": false
             },
             "Serilog": {
-              "Using": ["Serilog.Sinks.Console"],
+              "Using": [ "Serilog.Sinks.Console"],
               "MinimumLevel": "Information"
             }
           }
         }
         EOT
-    - name: ▶ Run P2G Sync		
-    - run: /app/ConsoleClient
+    
+    - name: ▶ Run P2G Sync
+      run: /app/ConsoleClient
       if: ${{ env.P2G_PELOTON__EMAIL && env.P2G_PELOTON__PASSWORD && env.P2G_GARMIN__EMAIL && env.P2G_GARMIN__PASSWORD }}
       working-directory: /app
       env:
@@ -93,7 +95,7 @@ jobs:
         P2G_PELOTON__PASSWORD: ${{ secrets.P2G_PELOTON__PASSWORD }}
         P2G_GARMIN__EMAIL: ${{ secrets.P2G_GARMIN__EMAIL }}
         P2G_GARMIN__PASSWORD: ${{ secrets.P2G_GARMIN__PASSWORD }}
-        TZ: Europe/London
+        TZ: America/Chicago
 
     - name: 💾 Save to output directory
       # saveLocalCopy can be set when workflow action is manually run otherwise it's always skipped 
