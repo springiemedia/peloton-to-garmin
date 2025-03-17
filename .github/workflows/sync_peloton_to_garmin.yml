@@ -1,6 +1,6 @@
 # This is a workflow that will automatically sync your Peloton rides with Garmin
 
-name: 🔄 Sync Workflow
+name: Sync workflow
 
 # Controls when the action will run.
 on:
@@ -13,33 +13,35 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: '0 1 * * *'
-
+  # MIGHT BE 2 hours out. So 7 = 9
+    - cron: '0 7 * * *'
+    - cron: '0 8 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 12 * * *'  
+    - cron: '0 17 * * *'
+    - cron: '0 18 * * *'
+    - cron: '0 19 * * *'
+    - cron: '0 20 * * *'
+    - cron: '0 22 * * *'
 jobs:
   sync:
-    name: 🔄 Sync
     runs-on: ubuntu-latest
     # The type of runner that the job will run on
     container: 
       image:  philosowaffle/peloton-to-garmin:console-stable
     steps:
-
-    - name: ⚙ Configure output directory
+    - name: Set env
       run: echo "OUTPUT_DIR=/app/output" >> $GITHUB_ENV
-
-    - name: 📁Create output directory
-      run: mkdir -p ${{ env.OUTPUT_DIR }}
-
-    - name: 🗃 Create config file
+    - run: mkdir -p ${{ env.OUTPUT_DIR }}
+    - name: Create config file
       env:
         DEFAULT_WORKOUT_NUM: 5
       run: |
         cat <<EOT > /app/configuration.local.json 
         {
           "App": {
-            "EnablePolling": false,
-            "CheckForUpdates": true,
-            "CloseConsoleOnFinish": true
+            "EnablePolling": false
           },
           "Format": {
             "Fit": true,
@@ -47,14 +49,11 @@ jobs:
             "Tcx": false,
             "SaveLocalCopy": ${{ github.event.inputs.saveLocalCopy || false }},
             "IncludeTimeInHRZones": false,
-            "IncludeTimeInPowerZones": false,
-            "StackedWorkouts": {
-              "AutomaticallyStackWorkouts": false,
-              "MaxAllowedGapSeconds": 300
-            }
+            "IncludeTimeInPowerZones": false
           },
           "Peloton": {
             "NumWorkoutsToDownload": ${{ github.event.inputs.workoutsToDownload || env.DEFAULT_WORKOUT_NUM }},
+            "ExcludeWorkoutTypes": ["Outdoor Cycling","TreadmillRunning","OutdoorRunning","TreadmillWalking","OutdoorWalking","Cardio","Circuit","Strength","Stretching","Yoga","Meditation"]
           },
           "Garmin": {
             "Upload": true,
@@ -68,15 +67,13 @@ jobs:
               "Enabled": false
             },
             "Serilog": {
-              "Using": [ "Serilog.Sinks.Console"],
+              "Using": ["Serilog.Sinks.Console"],
               "MinimumLevel": "Information"
             }
           }
         }
         EOT
-    
-    - name: ▶ Run P2G Sync
-      run: /app/ConsoleClient
+    - run: /app/ConsoleClient
       if: ${{ env.P2G_PELOTON__EMAIL && env.P2G_PELOTON__PASSWORD && env.P2G_GARMIN__EMAIL && env.P2G_GARMIN__PASSWORD }}
       working-directory: /app
       env:
@@ -84,9 +81,9 @@ jobs:
         P2G_PELOTON__PASSWORD: ${{ secrets.P2G_PELOTON__PASSWORD }}
         P2G_GARMIN__EMAIL: ${{ secrets.P2G_GARMIN__EMAIL }}
         P2G_GARMIN__PASSWORD: ${{ secrets.P2G_GARMIN__PASSWORD }}
-        TZ: America/Chicago
+        TZ: Europe/London
 
-    - name: 💾 Save to output directory
+    - name: archive files
       # saveLocalCopy can be set when workflow action is manually run otherwise it's always skipped 
       if: ${{ github.event.inputs.saveLocalCopy == 'true' }}
       run: |
@@ -94,10 +91,9 @@ jobs:
         apt-get install -y zip
         zip -r -j output.zip ${{ env.OUTPUT_DIR }}
         
-    - name: ⤴ Upload output directory
-      uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v4
       if: ${{ github.event.inputs.saveLocalCopy == 'true' }}
       with:
         name: output
         path: output.zip
-        if-no-files-found: error
+        if-no-files-found: error        
