@@ -53,8 +53,8 @@ jobs:
             "Tcx": false,
             "SaveLocalCopy": ${{ github.event.inputs.saveLocalCopy || false }},
             "IncludeTimeInHRZones": false,
-            "IncludeTimeInPowerZones": false,
-			"StackedWorkouts": {
+            "IncludeTimeInPowerZones": false,	    
+            "StackedWorkouts": {
               "AutomaticallyStackWorkouts": false,
               "MaxAllowedGapSeconds": 300
             }
