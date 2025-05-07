@@ -8,13 +8,13 @@ on:
     inputs:
       workoutsToDownload:
         type: number
-        default: "5"
+        default: "0"
       saveLocalCopy:
         type: boolean
         default: false
   schedule:
   # MIGHT BE 2 hours out. So 7 = 9
-     - cron: '0 7 * * *'
+ #    - cron: '0 7 * * *'
   #  - cron: '0 8 * * *'
   #  - cron: '0 9 * * *'
   #  - cron: '0 10 * * *'
