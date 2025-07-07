@@ -8,7 +8,7 @@ on:
     inputs:
       workoutsToDownload:
         type: number
-        default: "0"
+        default: "20"
       saveLocalCopy:
         type: boolean
         default: false
@@ -36,7 +36,7 @@ jobs:
 
     - name: 🗃 Create config file
       env:
-        DEFAULT_WORKOUT_NUM: 5
+        DEFAULT_WORKOUT_NUM: 20
       run: |
         cat <<EOT > /app/configuration.local.json 
         {
